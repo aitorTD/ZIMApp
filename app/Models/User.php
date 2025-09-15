@@ -7,10 +7,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -65,29 +66,7 @@ class User extends Authenticatable
         return "{$this->first_name} {$this->last_name}";
     }
 
-    /**
-     * The roles that belong to the user.
-     */
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
-
-    /**
-     * Check if the user has a specific role.
-     */
-    public function hasRole($roleName): bool
-    {
-        return $this->roles()->where('name', $roleName)->exists();
-    }
-
-    /**
-     * Check if the user has any of the given roles.
-     */
-    public function hasAnyRole(array $roles): bool
-    {
-        return $this->roles()->whereIn('name', $roles)->exists();
-    }
+    // Role-related methods are provided by the HasRoles trait from Spatie
 
     /**
      * Get the candidate record associated with the user.

@@ -18,21 +18,19 @@
         
         @stack('styles')
     </head>
-    <body class="min-h-screen flex flex-col bg-tactical-bg text-tactical-text">
-        <div class="tactical-overlay flex-1 flex flex-col">
-            @include('layouts.navigation')
-
-            <!-- Page Content -->
-            <main class="flex-1">
+    <body class="min-h-screen bg-tactical-bg text-tactical-text">
+        <!-- Main Content Wrapper -->
+        <main class="min-h-screen">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 @yield('content')
-            </main>
+            </div>
+        </main>
 
-            @hasSection('sidebar')
-                <aside class="lg:w-64 flex-shrink-0">
-                    @yield('sidebar')
-                </aside>
-            @endif
-        </div>
+        @hasSection('sidebar')
+            <aside class="lg:w-64 flex-shrink-0">
+                @yield('sidebar')
+            </aside>
+        @endif
 
         @stack('modals')
         @stack('scripts')

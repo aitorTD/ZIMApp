@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->string('description')->nullable();
-            $table->timestamps();
-        });
+        Schema::dropIfExists('role_user');
+        Schema::dropIfExists('roles');
     }
 
     /**
@@ -24,6 +20,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        // This is a destructive migration, so we won't implement down()
+        // as we don't want to recreate the old tables
     }
 };

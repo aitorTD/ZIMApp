@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             'country' => 'Spain',
             'postal_code' => '28001',
         ]);
-        $admin->roles()->attach(Role::where('name', 'admin')->first());
+        $admin->assignRole('admin');
 
         // Create sponsor users
         $sponsors = [
@@ -67,7 +67,8 @@ class UserSeeder extends Seeder
                 'postal_code' => '280' . str_pad(rand(1, 50), 2, '0', STR_PAD_LEFT),
             ]);
             
-            $user->roles()->attach(Role::where('name', 'sponsor')->first());
+            $sponsorUser = $user;
+            $sponsorUser->assignRole('sponsor');
             $user->roles()->attach(Role::where('name', 'member')->first());
             
             // Create sponsor profile

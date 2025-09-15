@@ -38,10 +38,26 @@ class DatabaseSeeder extends Seeder
 
         // Run seeders in the correct order
         $this->call([
-            RoleSeeder::class,
+            RoleAndPermissionSeeder::class,
             UserSeeder::class,
             GameSeeder::class,
         ]);
+        
+        // Ensure admin user exists
+        $admin = \App\Models\User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'first_name' => 'Admin',
+                'last_name' => 'User',
+                'email' => 'admin@example.com',
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            ]
+        );
+        
+        // Assign admin role if not already assigned
+        if (!$admin->hasRole('admin')) {
+            $admin->assignRole('admin');
+        }
         
         $this->command->info('Database seeded successfully!');
     }
