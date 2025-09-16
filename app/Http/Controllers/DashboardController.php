@@ -14,11 +14,23 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $candidates = Candidate::latest()->get();
+        
+        // Get paginated candidates (10 per page)
+        $candidates = Candidate::latest()->paginate(10);
+        
+        // Get statistics
+        $totalCandidates = Candidate::count();
+        $pendingCandidates = Candidate::where('status', 'pending')->count();
+        $acceptedCandidates = Candidate::where('status', 'accepted')->count();
+        $rejectedCandidates = Candidate::where('status', 'rejected')->count();
         
         return view('dashboard', [
             'user' => $user,
-            'candidates' => $candidates
+            'candidates' => $candidates,
+            'totalCandidates' => $totalCandidates,
+            'pendingCandidates' => $pendingCandidates,
+            'acceptedCandidates' => $acceptedCandidates,
+            'rejectedCandidates' => $rejectedCandidates
         ]);
     }
 }

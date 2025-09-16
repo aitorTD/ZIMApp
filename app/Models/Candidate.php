@@ -25,12 +25,26 @@ class Candidate extends Model
         'status',
         'rejection_reason',
         'notes',
-        'added_by',
+        'user_id',
         'application_date',
         'status_updated_at',
         'total_score',
         'evaluations_count',
+        'address',
+        'city',
+        'country',
+        'postal_code',
+        'date_of_birth',
+        'gender',
+        'biography'
     ];
+
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['notes.user', 'addedBy'];
 
     /**
      * The attributes that should be cast.
@@ -50,6 +64,34 @@ class Candidate extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    
+    /**
+     * Get the user who added this candidate.
+     */
+    public function addedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'added_by');
+    }
+
+    /**
+     * Get all notes for the candidate.
+     */
+    public function notes(): HasMany
+    {
+        return $this->hasMany(CandidateNote::class)->with('user')->latest();
+    }
+    
+    /**
+     * Get the notes relationship with a fallback to an empty collection.
+     */
+    public function getNotesAttribute($value)
+    {
+        if (!array_key_exists('notes', $this->relations)) {
+            $this->load('notes');
+        }
+        
+        return $this->getRelationValue('notes') ?? collect();
     }
 
     /**

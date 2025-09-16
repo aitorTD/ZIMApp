@@ -167,26 +167,26 @@
         <div class="tactical-overlay"></div>
         
         <div class="hero-content">
-            <h1 class="welcome-text">BIENVENIDO A AIRSOFT ZIMA</h1>
-            <p class="subtitle">Vive la experiencia del airsoft táctico en su máxima expresión. Únete a nuestra comunidad de jugadores de élite y lleva tus habilidades al siguiente nivel.</p>
+            <h1 class="welcome-text">ZIMA</h1>
+            <p class="subtitle">Pium pium pium pium pium</p>
             
             <div class="nav-links">
                 @auth
                     <a href="{{ route('dashboard') }}" class="nav-link btn-primary">
-                        <i class="fas fa-sign-in-alt mr-2"></i> Entrar
+                        <i class="fas fa-door-open mr-2"></i> Acceder al Cuartel
                     </a>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
                         <button type="submit" class="nav-link btn-outline">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Salir
+                            <i class="fas fa-sign-out-alt mr-2"></i> Abandonar Base
                         </button>
                     </form>
                 @else
                     <a href="{{ route('login') }}" class="nav-link btn-primary">
-                        <i class="fas fa-sign-in-alt mr-2"></i> Iniciar Sesión
+                        <i class="fas fa-user-secret mr-2"></i> Acceso de Operador
                     </a>
                     <a href="{{ route('register') }}" class="nav-link btn-outline">
-                        <i class="fas fa-user-plus mr-2"></i> Registrarse
+                        <i class="fas fa-user-shield mr-2"></i> Unirse al Escuadrón
                     </a>
                 @endauth
             </div>

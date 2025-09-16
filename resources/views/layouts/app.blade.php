@@ -34,5 +34,80 @@
 
         @stack('modals')
         @stack('scripts')
+        
+        <script>
+        // Global deleteNote function
+        window.deleteNote = function(event, noteId) {
+            event.preventDefault();
+            
+            if (!confirm('Are you sure you want to delete this note?')) {
+                return;
+            }
+            
+            const form = document.getElementById('delete-note-' + noteId);
+            if (!form) {
+                console.error('Delete form not found');
+                return;
+            }
+            
+            // Show loading state
+            const deleteButton = event.target.closest('button');
+            const originalHtml = deleteButton.innerHTML;
+            deleteButton.disabled = true;
+            deleteButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-HTTP-Method-Override': 'DELETE'
+                },
+                credentials: 'same-origin',
+                body: new FormData(form)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.message || 'Server error');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Remove the note from the DOM
+                    const noteElement = document.getElementById('note-' + noteId);
+                    if (noteElement) {
+                        noteElement.remove();
+                        
+                        // If no notes left, show empty message
+                        if (document.querySelectorAll('[id^="note-"]').length === 0) {
+                            const notesContainer = document.querySelector('.space-y-4');
+                            if (notesContainer) {
+                                notesContainer.innerHTML = '<p class="text-gray-500 text-center py-4">No notes yet. Add your first note above.</p>';
+                            }
+                        }
+                    }
+                    // Show success message
+                    alert('Note deleted successfully');
+                } else {
+                    throw new Error(data.message || 'Failed to delete note');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error: ' + (error.message || 'Failed to delete note'));
+            })
+            .finally(() => {
+                // Reset button state
+                if (deleteButton) {
+                    deleteButton.disabled = false;
+                    deleteButton.innerHTML = originalHtml;
+                }
+            });
+        };
+        </script>
     </body>
 </html>

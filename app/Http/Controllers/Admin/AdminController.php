@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
@@ -22,12 +23,12 @@ class AdminController extends Controller
     public function dashboard()
     {
         $membersCount = \App\Models\User::role(['member', 'sponsor'])->count();
-        $candidatesCount = \App\Models\User::role('candidate')->count();
+        $candidatesCount = \App\Models\Candidate::count();
         $recentMembers = \App\Models\User::role(['member', 'sponsor'])
             ->latest()
             ->take(5)
             ->get();
-        $recentCandidates = \App\Models\User::role('candidate')
+        $recentCandidates = \App\Models\Candidate::with('user')
             ->latest()
             ->take(5)
             ->get();
@@ -116,7 +117,7 @@ class AdminController extends Controller
 
         $user->roles()->sync($validated['roles']);
 
-        return redirect()->route('admin.members')
+        return redirect()->route('admin.members.index')
             ->with('success', 'Member updated successfully');
     }
 
@@ -129,10 +130,7 @@ class AdminController extends Controller
     // Candidates Management
     public function candidates()
     {
-        $candidates = User::with('roles')
-            ->whereHas('roles', function($query) {
-                $query->where('name', 'candidate');
-            })
+        $candidates = \App\Models\Candidate::with('user')
             ->latest()
             ->paginate(15);
 
@@ -150,29 +148,58 @@ class AdminController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'phone' => 'nullable|string|max:20',
+            'date_of_birth' => 'nullable|date',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'country' => 'nullable|string|max:100',
+            'postal_code' => 'nullable|string|max:20',
+            'gender' => 'nullable|string|max:10',
+            'biography' => 'nullable|string',
         ]);
 
+        // First create a user account for the candidate
         $user = User::create([
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'password' => Hash::make(Str::random(12)), // Generate a random password
+            'email_verified_at' => now(),
         ]);
 
+        // Assign candidate role
         $candidateRole = Role::where('name', 'candidate')->first();
-        $user->roles()->attach($candidateRole);
+        $user->assignRole($candidateRole);
+
+        // Create the candidate profile
+        $candidate = \App\Models\Candidate::create([
+            'user_id' => $user->id,
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
+            'date_of_birth' => $validated['date_of_birth'] ?? null,
+            'address' => $validated['address'] ?? null,
+            'city' => $validated['city'] ?? null,
+            'country' => $validated['country'] ?? null,
+            'postal_code' => $validated['postal_code'] ?? null,
+            'gender' => $validated['gender'] ?? null,
+            'biography' => $validated['biography'] ?? null,
+            'status' => 'pending',
+            'added_by' => auth()->id(),
+            'application_date' => now(),
+        ]);
 
         return redirect()->route('admin.candidates.index')
             ->with('success', 'Candidate created successfully');
     }
 
-    public function editCandidate(User $user)
+    public function editCandidate(\App\Models\Candidate $candidate)
     {
-        return view('admin.candidates.edit', compact('user'));
+        return view('admin.candidates.edit', compact('candidate'));
     }
 
-    public function updateCandidate(Request $request, User $user)
+    public function updateCandidate(Request $request, \App\Models\Candidate $candidate)
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -182,30 +209,35 @@ class AdminController extends Controller
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($user->id),
+                Rule::unique('candidates', 'email')->ignore($candidate->id),
             ],
-            'password' => 'nullable|string|min:8|confirmed',
+            'phone' => 'nullable|string|max:20',
+            'date_of_birth' => 'nullable|date',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'country' => 'nullable|string|max:100',
+            'postal_code' => 'nullable|string|max:20',
+            'gender' => 'nullable|string|max:10',
+            'biography' => 'nullable|string',
+            'status' => 'required|in:pending,accepted,rejected',
         ]);
 
-        $user->update([
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'email' => $validated['email'],
-        ]);
-
-        if (!empty($validated['password'])) {
-            $user->update([
-                'password' => Hash::make($validated['password']),
-            ]);
-        }
+        $candidate->update($validated);
 
         return redirect()->route('admin.candidates.index')
             ->with('success', 'Candidate updated successfully');
     }
 
-    public function deleteCandidate(User $user)
+    public function deleteCandidate(\App\Models\Candidate $candidate)
     {
-        $user->delete();
+        // Delete the associated user if it exists
+        if ($candidate->user) {
+            $candidate->user->delete();
+        }
+        
+        // Delete the candidate
+        $candidate->delete();
+        
         return back()->with('success', 'Candidate deleted successfully');
     }
 }

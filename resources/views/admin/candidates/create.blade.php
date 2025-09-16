@@ -1,13 +1,20 @@
 <x-admin>
     <form action="{{ route('admin.candidates.store') }}" method="POST">
         @csrf
-        <div class="shadow sm:rounded-md sm:overflow-hidden">
-            <div class="bg-white py-6 px-4 space-y-6 sm:p-6">
-                <div>
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">Add New Candidate</h3>
-                    <p class="mt-1 text-sm text-gray-500">Add a new candidate to the system.</p>
+        <div class="tactical-card overflow-hidden border border-tactical-border/50">
+            <div class="px-6 py-5 border-b border-tactical-border/30">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-tactical-text flex items-center">
+                            <i class="fas fa-user-plus text-tactical-accent mr-3"></i>
+                            Nuevo Recluta
+                        </h2>
+                        <p class="text-sm text-tactical-text/60 mt-1">Añade un nuevo recluta al sistema</p>
+                    </div>
                 </div>
-
+            </div>
+            
+            <div class="px-6 py-6 space-y-8">
                 @include('admin.candidates.form')
             </div>
         </div>

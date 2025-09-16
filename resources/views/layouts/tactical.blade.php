@@ -41,11 +41,11 @@
                         @else
                             <div class="flex items-center space-x-1">
                                 <a href="{{ route('dashboard') }}" class="px-3 py-2 text-sm font-medium {{ request()->routeIs('dashboard') ? 'text-tactical-accent' : 'text-tactical-text/80 hover:text-tactical-accent' }}">
-                                    Panel
+                                    Cuadro de Mando
                                 </a>
                                 @can('viewAny', App\Models\User::class)
                                 <a href="{{ route('admin.users.index') }}" class="px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'text-tactical-accent' : 'text-tactical-text/80 hover:text-tactical-accent' }}">
-                                    Usuarios
+                                    Operadores
                                 </a>
                                 @endcan
                             </div>
@@ -89,7 +89,7 @@
             <div class="md:hidden" x-show="open" @click.away="open = false">
                 <div class="pt-2 pb-3 space-y-1">
                     <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-base font-medium {{ request()->routeIs('dashboard') ? 'bg-tactical-primary/10 text-tactical-accent' : 'text-tactical-text/80 hover:bg-tactical-primary/10 hover:text-tactical-accent' }}">
-                        Panel
+                        Cuadro de Mando
                     </a>
                     @can('viewAny', App\Models\User::class)
                     <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-base font-medium {{ request()->routeIs('admin.users.*') ? 'bg-tactical-primary/10 text-tactical-accent' : 'text-tactical-text/80 hover:bg-tactical-primary/10 hover:text-tactical-accent' }}">

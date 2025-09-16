@@ -26,8 +26,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])
             Route::get('/', [AdminController::class, 'candidates'])->name('index');
             Route::get('/create', [AdminController::class, 'createCandidate'])->name('create');
             Route::post('/', [AdminController::class, 'storeCandidate'])->name('store');
-            Route::get('/{user}/edit', [AdminController::class, 'editCandidate'])->name('edit');
-            Route::put('/{user}', [AdminController::class, 'updateCandidate'])->name('update');
-            Route::delete('/{user}', [AdminController::class, 'deleteCandidate'])->name('destroy');
+            Route::get('/{candidate}/edit', [AdminController::class, 'editCandidate'])->name('edit');
+            Route::put('/{candidate}', [AdminController::class, 'updateCandidate'])->name('update');
+            Route::delete('/{candidate}', [AdminController::class, 'deleteCandidate'])->name('destroy');
         });
     });

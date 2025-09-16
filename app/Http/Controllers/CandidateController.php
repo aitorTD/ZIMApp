@@ -18,6 +18,14 @@ class CandidateController extends Controller
     }
 
     /**
+     * Show the form for creating a new candidate.
+     */
+    public function create()
+    {
+        return view('candidates.create');
+    }
+
+    /**
      * Store a newly created candidate in storage.
      */
     public function store(Request $request)
@@ -27,6 +35,13 @@ class CandidateController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:candidates,email',
             'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'country' => 'nullable|string|max:100',
+            'postal_code' => 'nullable|string|max:20',
+            'date_of_birth' => 'nullable|date',
+            'gender' => 'nullable|string|max:10',
+            'biography' => 'nullable|string',
             'notes' => 'nullable|string',
         ]);
 
@@ -35,9 +50,16 @@ class CandidateController extends Controller
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
-            'notes' => $validated['notes'] ?? null,
+            'address' => $validated['address'] ?? null,
+            'city' => $validated['city'] ?? null,
+            'country' => $validated['country'] ?? null,
+            'postal_code' => $validated['postal_code'] ?? null,
+            'date_of_birth' => $validated['date_of_birth'] ?? null,
+            'gender' => $validated['gender'] ?? null,
+            'biography' => $validated['biography'] ?? null,
             'status' => 'pending',
-            'added_by' => Auth::id(),
+            'user_id' => Auth::id(),
+            'application_date' => now(),
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Candidate added successfully!');
@@ -48,7 +70,20 @@ class CandidateController extends Controller
      */
     public function show(Candidate $candidate)
     {
-        return view('candidates.show', compact('candidate'));
+        // Eager load all necessary relationships
+        $candidate->load([
+            'user',
+            'notes' => function($query) {
+                $query->with('user')->latest();
+            }
+        ]);
+        
+        // Debug output - can be removed later
+        \Log::info('Candidate data:', $candidate->toArray());
+        
+        return view('candidates.show', [
+            'candidate' => $candidate
+        ]);
     }
 
     /**
@@ -69,7 +104,6 @@ class CandidateController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:candidates,email,' . $candidate->id,
             'phone' => 'nullable|string|max:20',
-            'notes' => 'nullable|string',
             'status' => 'required|in:pending,accepted,rejected',
         ]);
 

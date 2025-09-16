@@ -12,8 +12,8 @@
                 <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-tactical-primary/10 flex items-center justify-center">
                     <i class="fas fa-user-plus text-2xl text-tactical-accent"></i>
                 </div>
-                <h2 class="text-2xl font-orbitron font-bold text-tactical-text">OPERATOR REGISTRATION</h2>
-                <p class="text-tactical-text/70 mt-1">Join the ZIMA tactical network</p>
+                <h2 class="text-2xl font-orbitron font-bold text-tactical-text">REGISTRO DE OPERADOR</h2>
+                <p class="text-tactical-text/70 mt-1">Únete a la red táctica ZIMA</p>
             </div>
 
             <form method="POST" action="{{ route('register') }}" class="space-y-6">
@@ -22,7 +22,7 @@
                 <!-- First Name -->
                 <div class="space-y-2">
                     <label for="first_name" class="input-label">
-                        <i class="fas fa-id-card mr-2"></i>First Name
+                        <i class="fas fa-id-card mr-2"></i>Nombre
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -30,7 +30,7 @@
                         </div>
                         <input id="first_name" class="input-field pl-10" type="text" name="first_name" 
                                value="{{ old('first_name') }}" required autofocus autocomplete="given-name" 
-                               placeholder="Operator's first name">
+                               placeholder="Nombre del operador">
                     </div>
                     @error('first_name')
                         <p class="text-tactical-accent/80 text-sm mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</p>
@@ -40,7 +40,7 @@
                 <!-- Last Name -->
                 <div class="space-y-2">
                     <label for="last_name" class="input-label">
-                        <i class="fas fa-id-card mr-2"></i>Last Name
+                        <i class="fas fa-id-card mr-2"></i>Apellidos
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -48,7 +48,7 @@
                         </div>
                         <input id="last_name" class="input-field pl-10" type="text" name="last_name" 
                                value="{{ old('last_name') }}" required autocomplete="family-name" 
-                               placeholder="Operator's last name">
+                               placeholder="Apellidos del operador">
                     </div>
                     @error('last_name')
                         <p class="text-tactical-accent/80 text-sm mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</p>
@@ -58,7 +58,7 @@
                 <!-- Email -->
                 <div class="space-y-2">
                     <label for="email" class="input-label">
-                        <i class="fas fa-envelope mr-2"></i>Email
+                        <i class="fas fa-envelope mr-2"></i>Correo Electrónico
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -76,7 +76,7 @@
                 <!-- Password -->
                 <div class="space-y-2">
                     <label for="password" class="input-label">
-                        <i class="fas fa-key mr-2"></i>Access Code
+                        <i class="fas fa-lock mr-2"></i>Contraseña
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -93,7 +93,7 @@
                 <!-- Confirm Password -->
                 <div class="space-y-2">
                     <label for="password_confirmation" class="input-label">
-                        <i class="fas fa-shield-alt mr-2"></i>Confirm Access Code
+                        <i class="fas fa-lock mr-2"></i>Confirmar Contraseña
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -107,17 +107,15 @@
 
                 <div class="pt-2">
                     <button type="submit" class="btn-primary w-full flex items-center justify-center py-2.5">
-                        <i class="fas fa-user-plus mr-2"></i> COMPLETE REGISTRATION
+                        <i class="fas fa-user-plus mr-2"></i> COMPLETAR REGISTRO
                     </button>
                 </div>
             </form>
 
             <div class="mt-6 pt-6 border-t border-tactical-border text-center">
                 <p class="text-sm text-tactical-text/70">
-                    Already have an operator account? 
-                    <a href="{{ route('login') }}" class="font-medium text-tactical-primary hover:text-tactical-accent transition-colors">
-                        Authenticate Here
-                    </a>
+                    ¿Ya tienes una cuenta de operador? 
+                    <a href="{{ route('login') }}" class="text-tactical-accent hover:text-tactical-accent/80 font-medium">Iniciar Sesión</a>
                 </p>
             </div>
         </div>

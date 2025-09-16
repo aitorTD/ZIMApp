@@ -45,6 +45,61 @@ class User extends Authenticatable
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['name'];
+
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return trim("{$this->first_name} {$this->last_name}");
+    }
+
+    /**
+     * Get the candidates that this user is sponsoring
+     */
+    public function sponsoredCandidates()
+    {
+        return $this->belongsToMany(User::class, 'candidate_sponsor', 'sponsor_id', 'candidate_id')
+            ->withPivot('status', 'notes')
+            ->withTimestamps()
+            ->using(CandidateSponsor::class);
+    }
+
+    /**
+     * Get the sponsors for this candidate
+     */
+    public function sponsors()
+    {
+        return $this->belongsToMany(User::class, 'candidate_sponsor', 'candidate_id', 'sponsor_id')
+            ->withPivot('status', 'notes')
+            ->withTimestamps()
+            ->using(CandidateSponsor::class);
+    }
+
+    /**
+     * Check if the user is a sponsor
+     */
+    public function isSponsor()
+    {
+        return $this->hasRole('member') || $this->hasRole('sponsor');
+    }
+
+    /**
+     * Check if the user is a candidate
+     */
+    public function isCandidate()
+    {
+        return $this->hasRole('candidate');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

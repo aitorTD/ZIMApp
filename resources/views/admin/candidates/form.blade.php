@@ -1,54 +1,100 @@
 @props(['candidate' => null])
 
 <div class="space-y-6">
-    <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-        <div class="md:grid md:grid-cols-3 md:gap-6">
-            <div class="md:col-span-1">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Candidate Information</h3>
-                <p class="mt-1 text-sm text-gray-500">Basic candidate details.</p>
-            </div>
-            <div class="mt-5 md:mt-0 md:col-span-2">
-                <div class="grid grid-cols-6 gap-6">
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="first_name" class="block text-sm font-medium text-gray-700">First name</label>
-                        <input type="text" name="first_name" id="first_name" value="{{ old('first_name', $candidate?->first_name) }}" required
-                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="last_name" class="block text-sm font-medium text-gray-700">Last name</label>
-                        <input type="text" name="last_name" id="last_name" value="{{ old('last_name', $candidate?->last_name) }}" required
-                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div class="col-span-6 sm:col-span-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-                        <input type="email" name="email" id="email" value="{{ old('email', $candidate?->email) }}" required
-                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div class="col-span-6 sm:col-span-4">
-                        <label for="password" class="block text-sm font-medium text-gray-700">{{ $candidate ? 'New Password' : 'Password' }}</label>
-                        <input type="password" name="password" id="password" {{ $candidate ? '' : 'required' }}
-                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div class="col-span-6 sm:col-span-4">
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">{{ $candidate ? 'Confirm New Password' : 'Confirm Password' }}</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" {{ $candidate ? '' : 'required' }}
-                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
+    <div class="bg-tactical-surface/30 border border-tactical-border/30 rounded-lg p-6">
+        <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-1">
+                    <label for="first_name" class="block text-sm font-medium text-tactical-text/80">
+                        <i class="fas fa-id-card mr-2 text-tactical-accent/80"></i>
+                        Nombre
+                    </label>
+                    <input type="text" 
+                           name="first_name" 
+                           id="first_name" 
+                           value="{{ old('first_name', $candidate?->first_name) }}" 
+                           required
+                           class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
                 </div>
+
+                <div class="space-y-1">
+                    <label for="last_name" class="block text-sm font-medium text-tactical-text/80">
+                        <i class="fas fa-id-card mr-2 text-tactical-accent/80"></i>
+                        Apellidos
+                    </label>
+                    <input type="text" 
+                           name="last_name" 
+                           id="last_name" 
+                           value="{{ old('last_name', $candidate?->last_name) }}" 
+                           required
+                           class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                </div>
+
+                <div class="space-y-1">
+                    <label for="email" class="block text-sm font-medium text-tactical-text/80">
+                        <i class="fas fa-envelope mr-2 text-tactical-accent/80"></i>
+                        Correo Electrónico
+                    </label>
+                    <input type="email" 
+                           name="email" 
+                           id="email" 
+                           value="{{ old('email', $candidate?->email) }}" 
+                           required
+                           class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                </div>
+
+                <div class="space-y-1">
+                    <label for="password" class="block text-sm font-medium text-tactical-text/80">
+                        <i class="fas fa-lock mr-2 text-tactical-accent/80"></i>
+                        {{ $candidate ? 'Nueva Contraseña' : 'Contraseña' }}
+                    </label>
+                    <input type="password" 
+                           name="password" 
+                           id="password" 
+                           {{ $candidate ? '' : 'required' }}
+                           class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                </div>
+
+                <div class="space-y-1">
+                    <label for="password_confirmation" class="block text-sm font-medium text-tactical-text/80">
+                        <i class="fas fa-check-circle mr-2 text-tactical-accent/80"></i>
+                        {{ $candidate ? 'Confirmar Nueva Contraseña' : 'Confirmar Contraseña' }}
+                    </label>
+                    <input type="password" 
+                           name="password_confirmation" 
+                           id="password_confirmation" 
+                           {{ $candidate ? '' : 'required' }}
+                           class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                </div>
+
+                @if($candidate)
+                <div class="space-y-1">
+                    <label for="status" class="block text-sm font-medium text-tactical-text/80">
+                        <i class="fas fa-flag mr-2 text-tactical-accent/80"></i>
+                        Estado
+                    </label>
+                    <select id="status" 
+                            name="status" 
+                            required
+                            class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                        <option value="pending" {{ old('status', $candidate->status) === 'pending' ? 'selected' : '' }}>Pendiente</option>
+                        <option value="accepted" {{ old('status', $candidate->status) === 'accepted' ? 'selected' : '' }}>Aceptado</option>
+                        <option value="rejected" {{ old('status', $candidate->status) === 'rejected' ? 'selected' : '' }}>Rechazado</option>
+                    </select>
+                </div>
+                @else
+                    <input type="hidden" name="status" value="pending">
+                @endif
             </div>
         </div>
     </div>
 
-    <div class="flex justify-end">
-        <a href="{{ route('admin.candidates.index') }}" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-            Cancel
+    <div class="flex justify-end space-x-3 pt-4 border-t border-tactical-border/30">
+        <a href="{{ route('admin.candidates.index') }}" class="px-4 py-2 border border-tactical-border/50 bg-tactical-surface/50 text-tactical-text/80 rounded-md text-sm font-medium hover:bg-tactical-surface/70 transition-colors duration-200">
+            <i class="fas fa-times mr-2"></i>Cancelar
         </a>
-        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-            {{ $candidate ? 'Update' : 'Create' }} Candidate
+        <button type="submit" class="px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-tactical-bg bg-tactical-accent hover:bg-tactical-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tactical-accent/50 transition-colors duration-200">
+            <i class="fas fa-{{ $candidate ? 'save' : 'plus' }} mr-2"></i>{{ $candidate ? 'Actualizar' : 'Crear' }} Recluta
         </button>
     </div>
 </div>

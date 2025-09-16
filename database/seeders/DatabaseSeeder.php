@@ -38,9 +38,10 @@ class DatabaseSeeder extends Seeder
 
         // Run seeders in the correct order
         $this->call([
-            RoleAndPermissionSeeder::class,
-            UserSeeder::class,
-            GameSeeder::class,
+            RolesAndPermissionsSeeder::class,  // Create roles and permissions first
+            UserSeeder::class,                // Then create users
+            GameSeeder::class,                // Then seed other data
+            AdminUserSeeder::class,           // Then assign admin role
         ]);
         
         // Ensure admin user exists
