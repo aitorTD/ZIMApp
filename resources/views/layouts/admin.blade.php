@@ -61,7 +61,10 @@
                             <i class="fas fa-shield-alt mr-2"></i> Mando Central
                         </a>
                         <div class="hidden sm:ml-10 sm:flex sm:space-x-8">
-                            <a href="{{ route('admin.members.index') }}" class="tactical-nav-link {{ request()->routeIs('admin.members*') ? 'text-tactical-accent' : '' }} inline-flex items-center px-1 pt-1 text-sm font-medium">
+                            <a href="{{ route('dashboard') }}" class="tactical-nav-link {{ request()->routeIs('dashboard') ? 'text-tactical-accent' : '' }} inline-flex items-center px-1 pt-1 text-sm font-medium">
+                                <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                            </a>
+                            <a href="{{ route('admin.members.index') }}" class="tactical-nav-link {{ request()->routeIs('admin.members*') ? 'text-tactical-accent' : '' }} inline-flex items-center px-1 pt-1 text-sm font-medium ml-6">
                                 <i class="fas fa-users mr-1"></i> Escuadrón
                             </a>
                             <a href="{{ route('admin.candidates.index') }}" class="tactical-nav-link {{ request()->routeIs('admin.candidates*') ? 'text-tactical-accent' : '' }} inline-flex items-center px-1 pt-1 text-sm font-medium ml-6">
@@ -116,6 +119,9 @@
             <!-- Mobile menu, show/hide based on menu state. -->
             <div x-show="mobileMenuOpen" class="sm:hidden bg-tactical-surface/90 border-t border-tactical-border/50" id="mobile-menu">
                 <div class="pt-2 pb-3 space-y-1">
+                    <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-base font-medium {{ request()->routeIs('dashboard') ? 'text-tactical-accent bg-tactical-accent/10' : 'text-tactical-text/80 hover:bg-tactical-accent/10' }}">
+                        <i class="fas fa-tachometer-alt w-6 text-center mr-2"></i> Dashboard
+                    </a>
                     <a href="{{ route('admin.members.index') }}" class="flex items-center px-4 py-3 text-base font-medium {{ request()->routeIs('admin.members*') ? 'text-tactical-accent bg-tactical-accent/10' : 'text-tactical-text/80 hover:bg-tactical-accent/10' }}">
                         <i class="fas fa-users w-6 text-center mr-2"></i> Escuadrón
                     </a>

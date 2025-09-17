@@ -2,7 +2,7 @@
     <div class="max-w-5xl w-full mx-auto px-4 py-6">
         <!-- Header -->
         <div class="text-center mb-8">
-            <h1 class="text-2xl font-orbitron font-bold text-tactical-text mb-1">Bienvenido, <span class="text-tactical-accent">{{ auth()->user()->first_name }}</span></h1>
+            <h1 class="text-2xl font-orbitron font-bold text-tactical-text mb-1">Bienvenido, <span class="text-tactical-accent">{{ auth()->user()->nickname ?? auth()->user()->first_name }}</span></h1>
             <p class="text-sm text-tactical-text/60">{{ now()->format('d/m/Y H:i') }}</p>
         </div>
 

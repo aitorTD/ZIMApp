@@ -50,6 +50,7 @@ class RoleAndPermissionSeeder extends Seeder
             'access admin panel',
         ]);
 
+        // Create sponsor role with permissions
         $sponsorRole = Role::firstOrCreate(['name' => 'sponsor', 'guard_name' => 'web']);
         $sponsorRole->syncPermissions([
             'view members',
@@ -57,9 +58,11 @@ class RoleAndPermissionSeeder extends Seeder
             'create candidates',
         ]);
 
+        // Create member role with basic permissions
         $memberRole = Role::firstOrCreate(['name' => 'member', 'guard_name' => 'web']);
         $memberRole->syncPermissions([
             'view members',
+            'view candidates',
         ]);
 
         $candidateRole = Role::firstOrCreate(['name' => 'candidate', 'guard_name' => 'web']);

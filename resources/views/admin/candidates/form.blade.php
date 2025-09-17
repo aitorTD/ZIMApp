@@ -14,20 +14,22 @@
                            id="first_name" 
                            value="{{ old('first_name', $candidate?->first_name) }}" 
                            required
-                           class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                           class="mt-1 block w-full bg-tactical-surface/80 border-tactical-border/50 text-white rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm"
+                           placeholder="Nombre">
                 </div>
 
                 <div class="space-y-1">
-                    <label for="last_name" class="block text-sm font-medium text-tactical-text/80">
-                        <i class="fas fa-id-card mr-2 text-tactical-accent/80"></i>
-                        Apellidos
+                    <label for="nickname" class="block text-sm font-medium text-tactical-text/80">
+                        <i class="fas fa-user-secret mr-2 text-tactical-accent/80"></i>
+                        Nickname
                     </label>
                     <input type="text" 
-                           name="last_name" 
-                           id="last_name" 
-                           value="{{ old('last_name', $candidate?->last_name) }}" 
+                           name="nickname" 
+                           id="nickname" 
+                           value="{{ old('nickname', $candidate?->nickname) }}" 
                            required
-                           class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                           class="mt-1 block w-full bg-tactical-surface/80 border-tactical-border/50 text-white rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm"
+                           placeholder="Nickname">
                 </div>
 
                 <div class="space-y-1">
@@ -40,7 +42,8 @@
                            id="email" 
                            value="{{ old('email', $candidate?->email) }}" 
                            required
-                           class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                           class="mt-1 block w-full bg-tactical-surface/80 border-tactical-border/50 text-white rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm"
+                           placeholder="correo@ejemplo.com">
                 </div>
 
                 <div class="space-y-1">
@@ -52,7 +55,8 @@
                            name="password" 
                            id="password" 
                            {{ $candidate ? '' : 'required' }}
-                           class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                           class="mt-1 block w-full bg-tactical-surface/80 border-tactical-border/50 text-white rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm"
+                           placeholder="••••••••">
                 </div>
 
                 <div class="space-y-1">
@@ -64,7 +68,8 @@
                            name="password_confirmation" 
                            id="password_confirmation" 
                            {{ $candidate ? '' : 'required' }}
-                           class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                           class="mt-1 block w-full bg-tactical-surface/80 border-tactical-border/50 text-white rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm"
+                           placeholder="••••••••">
                 </div>
 
                 @if($candidate)
@@ -76,7 +81,7 @@
                     <select id="status" 
                             name="status" 
                             required
-                            class="mt-1 block w-full bg-tactical-surface/50 border-tactical-border/50 text-tactical-text rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
+                            class="mt-1 block w-full bg-tactical-surface/80 border-tactical-border/50 text-white rounded-md shadow-sm focus:ring-tactical-accent focus:border-tactical-accent sm:text-sm">
                         <option value="pending" {{ old('status', $candidate->status) === 'pending' ? 'selected' : '' }}>Pendiente</option>
                         <option value="accepted" {{ old('status', $candidate->status) === 'accepted' ? 'selected' : '' }}>Aceptado</option>
                         <option value="rejected" {{ old('status', $candidate->status) === 'rejected' ? 'selected' : '' }}>Rechazado</option>

@@ -31,14 +31,15 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'nickname' => ['required', 'string', 'max:255', 'unique:'.User::class],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'last_name' => $request->nickname, // Using nickname as last_name for backward compatibility
+            'nickname' => $request->nickname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'membership_status' => 'active', // Set default membership status

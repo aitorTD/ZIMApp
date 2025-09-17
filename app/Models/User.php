@@ -18,9 +18,25 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    /**
+     * The name of the username field for authentication.
+     *
+     * @var string
+     */
+    public function username()
+    {
+        return 'nickname';
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
         'first_name',
         'last_name',
+        'nickname',
         'email',
         'password',
         'phone',

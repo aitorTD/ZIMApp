@@ -41,9 +41,20 @@ class AdminController extends Controller
     {
         $members = User::with('roles')
             ->whereHas('roles', function($query) {
-                $query->whereIn('name', ['member', 'sponsor']);
+                $query->whereIn('name', ['member', 'sponsor', 'admin']);
             })
-            ->latest()
+            ->leftJoin('model_has_roles', function($join) {
+                $join->on('users.id', '=', 'model_has_roles.model_id')
+                     ->where('model_has_roles.model_type', '=', 'App\\Models\\User');
+            })
+            ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->select('users.*')
+            ->orderByRaw("CASE 
+                WHEN roles.name = 'admin' THEN 1
+                WHEN roles.name = 'sponsor' THEN 2
+                ELSE 3 
+            END")
+            ->latest('users.created_at')
             ->paginate(15);
 
         return view('admin.members.index', compact('members'));
@@ -60,7 +71,7 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'nickname' => 'required|string|max:255|unique:users,nickname',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'roles' => 'required|array',
@@ -69,15 +80,16 @@ class AdminController extends Controller
 
         $user = User::create([
             'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
+            'nickname' => $validated['nickname'],
+            'last_name' => $validated['nickname'], // Keep last_name for backward compatibility
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
 
         $user->roles()->sync($validated['roles']);
 
-        return redirect()->route('admin.members')
-            ->with('success', 'Member created successfully');
+        return redirect()->route('admin.members.index')
+            ->with('success', 'Miembro creado exitosamente');
     }
 
     public function editMember(User $user)
@@ -90,7 +102,12 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'nickname' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
             'email' => [
                 'required',
                 'string',
@@ -105,7 +122,8 @@ class AdminController extends Controller
 
         $user->update([
             'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
+            'nickname' => $validated['nickname'],
+            'last_name' => $validated['nickname'], // Keep last_name for backward compatibility
             'email' => $validated['email'],
         ]);
 
@@ -146,7 +164,7 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'nickname' => 'required|string|max:255|unique:users,nickname',
             'email' => 'required|string|email|max:255|unique:users',
             'phone' => 'nullable|string|max:20',
             'date_of_birth' => 'nullable|date',
@@ -161,7 +179,8 @@ class AdminController extends Controller
         // First create a user account for the candidate
         $user = User::create([
             'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
+            'last_name' => $validated['nickname'], // Using nickname as last_name for backward compatibility
+            'nickname' => $validated['nickname'],
             'email' => $validated['email'],
             'password' => Hash::make(Str::random(12)), // Generate a random password
             'email_verified_at' => now(),
@@ -175,7 +194,8 @@ class AdminController extends Controller
         $candidate = \App\Models\Candidate::create([
             'user_id' => $user->id,
             'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
+            'last_name' => $validated['nickname'], // Using nickname as last_name for backward compatibility
+            'nickname' => $validated['nickname'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
             'date_of_birth' => $validated['date_of_birth'] ?? null,
@@ -203,7 +223,12 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'nickname' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('candidates', 'nickname')->ignore($candidate->id),
+            ],
             'email' => [
                 'required',
                 'string',
@@ -222,10 +247,63 @@ class AdminController extends Controller
             'status' => 'required|in:pending,accepted,rejected',
         ]);
 
-        $candidate->update($validated);
+        // Check if status is being changed to accepted
+        $statusChanged = $candidate->status !== $validated['status'];
+        $becomingAccepted = $statusChanged && $validated['status'] === 'accepted';
+        
+        // Prepare the update data
+        $updateData = [
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['nickname'],
+            'nickname' => $validated['nickname'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
+            'date_of_birth' => $validated['date_of_birth'] ?? null,
+            'address' => $validated['address'] ?? null,
+            'city' => $validated['city'] ?? null,
+            'country' => $validated['country'] ?? null,
+            'postal_code' => $validated['postal_code'] ?? null,
+            'gender' => $validated['gender'] ?? null,
+            'biography' => $validated['biography'] ?? null,
+            'status' => $validated['status'],
+        ];
+        
+        // Update status_updated_at if status is changing
+        if ($statusChanged) {
+            $updateData['status_updated_at'] = now();
+        }
+        
+        // Update the candidate
+        $candidate->update($updateData);
+
+        // If status is changing to accepted, handle the acceptance
+        if ($becomingAccepted) {
+            // If there's no user yet, create one through the observer
+            if (!$candidate->user) {
+                // This will trigger the CandidateObserver
+                $candidate->refresh(); // Make sure we have the latest data
+                event('eloquent.updated: ' . get_class($candidate), $candidate);
+            }
+            
+            // Delete the candidate after a short delay to allow the observer to complete
+            // This ensures the candidate is removed from the candidates list
+            $candidate->delete();
+            
+            return redirect()->route('admin.members.index')
+                ->with('success', '¡Recluta aceptado y convertido en miembro exitosamente!');
+        }
+        // Update associated user if it already exists
+        elseif ($candidate->user) {
+            $candidate->user->update([
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['nickname'],
+                'nickname' => $validated['nickname'],
+                'email' => $validated['email'],
+            ]);
+        }
 
         return redirect()->route('admin.candidates.index')
-            ->with('success', 'Candidate updated successfully');
+            ->with('success', 'Recluta actualizado exitosamente');
     }
 
     public function deleteCandidate(\App\Models\Candidate $candidate)

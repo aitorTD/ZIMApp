@@ -45,17 +45,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     });
     
-    // Candidate management
-    Route::resource('candidates', \App\Http\Controllers\CandidateController::class)->except(['index']);
+    // Candidate management - protected by register-candidate gate
+    Route::middleware(['can:register-candidate'])->group(function () {
+        Route::resource('candidates', \App\Http\Controllers\CandidateController::class)->except(['index']);
+        
+        // Candidate registration form - only accessible to admins/members
+        Route::get('/candidates/register', [\App\Http\Controllers\CandidateController::class, 'create'])
+            ->name('candidates.register');
+    });
     
-    // Candidate notes routes (nested under candidates)
-    Route::resource('candidates.notes', \App\Http\Controllers\CandidateNoteController::class)
-        ->only(['store', 'update', 'destroy'])
-        ->names([
-            'store' => 'candidates.notes.store',
-            'update' => 'candidates.notes.update',
-            'destroy' => 'candidates.notes.destroy'
-        ]);
+    // Candidate notes routes (nested under candidates) - protected by register-candidate gate
+    Route::middleware(['can:register-candidate'])->group(function () {
+        Route::resource('candidates.notes', \App\Http\Controllers\CandidateNoteController::class)
+            ->only(['store', 'update', 'destroy'])
+            ->names([
+                'store' => 'candidates.notes.store',
+                'update' => 'candidates.notes.update',
+                'destroy' => 'candidates.notes.destroy'
+            ]);
+    });
     
     // Sponsor routes
     Route::prefix('sponsor')->name('sponsor.')->group(function () {

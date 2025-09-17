@@ -48,6 +48,11 @@
                                     Operadores
                                 </a>
                                 @endcan
+                                @can('register-candidate')
+                                <a href="{{ route('candidates.register') }}" class="px-3 py-2 text-sm font-medium {{ request()->routeIs('candidates.*') ? 'text-tactical-accent' : 'text-tactical-text/80 hover:text-tactical-accent' }}">
+                                    Registrar Recluta
+                                </a>
+                                @endcan
                             </div>
                             
                             <div class="flex items-center ml-6">
@@ -94,6 +99,11 @@
                     @can('viewAny', App\Models\User::class)
                     <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-base font-medium {{ request()->routeIs('admin.users.*') ? 'bg-tactical-primary/10 text-tactical-accent' : 'text-tactical-text/80 hover:bg-tactical-primary/10 hover:text-tactical-accent' }}">
                         Usuarios
+                    </a>
+                    @endcan
+                    @can('register-candidate')
+                    <a href="{{ route('candidates.register') }}" class="block px-4 py-2 text-base font-medium {{ request()->routeIs('candidates.*') ? 'bg-tactical-primary/10 text-tactical-accent' : 'text-tactical-text/80 hover:bg-tactical-primary/10 hover:text-tactical-accent' }}">
+                        Registrar Recluta
                     </a>
                     @endcan
                 </div>

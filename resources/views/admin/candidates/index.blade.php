@@ -13,22 +13,6 @@
     </div>
 
     <div class="tactical-card overflow-hidden border border-tactical-border/50">
-        <div class="px-4 py-5 sm:px-6 border-b border-tactical-border/30">
-            <div class="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4">
-                <div class="w-full sm:w-1/3">
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-tactical-text/50"></i>
-                        </div>
-                        <input 
-                            type="text" 
-                            placeholder="Buscar reclutas..." 
-                            class="block w-full pl-10 pr-3 py-2 border border-tactical-border/30 bg-tactical-surface/50 rounded-md text-tactical-text placeholder-tactical-text/50 focus:outline-none focus:ring-2 focus:ring-tactical-accent/50 focus:border-tactical-accent/50 sm:text-sm"
-                        >
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-tactical-border/30">

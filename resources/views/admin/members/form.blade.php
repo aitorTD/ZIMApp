@@ -3,81 +3,134 @@
     'roles' => []
 ])
 
-<div class="space-y-6">
-    <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-        <div class="md:grid md:grid-cols-3 md:gap-6">
-            <div class="md:col-span-1">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Profile</h3>
-                <p class="mt-1 text-sm text-gray-500">Basic member information.</p>
-            </div>
-            <div class="mt-5 md:mt-0 md:col-span-2">
-                <div class="grid grid-cols-6 gap-6">
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="first_name" class="block text-sm font-medium text-gray-700">First name</label>
+<div class="space-y-8">
+    <!-- Información del Operador -->
+    <div class="bg-tactical-surface/30 rounded-lg border border-tactical-border/30 overflow-hidden">
+        <div class="px-6 py-4 border-b border-tactical-border/30 bg-tactical-surface/50">
+            <h3 class="text-lg font-medium text-tactical-text flex items-center">
+                <i class="fas fa-id-card text-tactical-accent mr-2"></i>
+                Información del Operador
+            </h3>
+            <p class="mt-1 text-sm text-tactical-text/60">Datos básicos del nuevo miembro del escuadrón.</p>
+        </div>
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Nombre -->
+                <div class="space-y-1">
+                    <label for="first_name" class="block text-sm font-medium text-tactical-text/90">
+                        <i class="fas fa-user mr-1 text-tactical-accent/80"></i>
+                        Nombre
+                    </label>
+                    <div class="mt-1">
                         <input type="text" name="first_name" id="first_name" value="{{ old('first_name', $member?->first_name) }}" required
-                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            class="block w-full rounded-md border-tactical-border/50 bg-tactical-surface/80 text-tactical-text placeholder-tactical-text/70 focus:ring-tactical-accent/50 focus:border-tactical-accent/50 sm:text-sm text-gray-900"
+                            placeholder="Nombre">
                     </div>
+                    @error('first_name')
+                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="last_name" class="block text-sm font-medium text-gray-700">Last name</label>
-                        <input type="text" name="last_name" id="last_name" value="{{ old('last_name', $member?->last_name) }}" required
-                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                <!-- Nickname -->
+                <div class="space-y-1">
+                    <label for="nickname" class="block text-sm font-medium text-tactical-text/90">
+                        <i class="fas fa-user-secret mr-1 text-tactical-accent/80"></i>
+                        Nickname
+                    </label>
+                    <div class="mt-1">
+                        <input type="text" name="nickname" id="nickname" value="{{ old('nickname', $member?->nickname) }}" required
+                            class="block w-full rounded-md border-tactical-border/50 bg-tactical-surface/80 text-tactical-text placeholder-tactical-text/70 focus:ring-tactical-accent/50 focus:border-tactical-accent/50 sm:text-sm text-gray-900"
+                            placeholder="Nickname">
+                        <p class="mt-1 text-xs text-tactical-text/60">Tu alias en el campo de batalla</p>
                     </div>
+                    @error('nickname')
+                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                    <div class="col-span-6 sm:col-span-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                <!-- Email -->
+                <div class="space-y-1">
+                    <label for="email" class="block text-sm font-medium text-tactical-text/90">
+                        <i class="fas fa-envelope mr-1 text-tactical-accent/80"></i>
+                        Correo Electrónico
+                    </label>
+                    <div class="mt-1">
                         <input type="email" name="email" id="email" value="{{ old('email', $member?->email) }}" required
-                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            class="block w-full rounded-md border-tactical-border/50 bg-tactical-surface/80 text-tactical-text placeholder-tactical-text/70 focus:ring-tactical-accent/50 focus:border-tactical-accent/50 sm:text-sm text-gray-900"
+                            placeholder="operador@ejemplo.com">
                     </div>
+                    @error('email')
+                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                    <div class="col-span-6 sm:col-span-4">
-                        <label for="password" class="block text-sm font-medium text-gray-700">{{ $member ? 'New Password' : 'Password' }}</label>
+                <!-- Contraseña -->
+                <div class="space-y-1">
+                    <label for="password" class="block text-sm font-medium text-tactical-text/90">
+                        <i class="fas fa-key mr-1 text-tactical-accent/80"></i>
+                        {{ $member ? 'Nueva Contraseña' : 'Contraseña' }}
+                    </label>
+                    <div class="mt-1">
                         <input type="password" name="password" id="password" {{ $member ? '' : 'required' }}
-                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            class="block w-full rounded-md border-tactical-border/50 bg-tactical-surface/80 text-tactical-text placeholder-tactical-text/70 focus:ring-tactical-accent/50 focus:border-tactical-accent/50 sm:text-sm text-gray-900"
+                            placeholder="••••••••">
                     </div>
+                    @error('password')
+                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                    <div class="col-span-6 sm:col-span-4">
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">{{ $member ? 'Confirm New Password' : 'Confirm Password' }}</label>
+                <!-- Confirmar Contraseña -->
+                <div class="space-y-1">
+                    <label for="password_confirmation" class="block text-sm font-medium text-tactical-text/90">
+                        <i class="fas fa-check-double mr-1 text-tactical-accent/80"></i>
+                        Confirmar Contraseña
+                    </label>
+                    <div class="mt-1">
                         <input type="password" name="password_confirmation" id="password_confirmation" {{ $member ? '' : 'required' }}
-                            class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            class="block w-full rounded-md border-tactical-border/50 bg-tactical-surface/80 text-tactical-text placeholder-tactical-text/70 focus:ring-tactical-accent/50 focus:border-tactical-accent/50 sm:text-sm text-gray-900"
+                            placeholder="••••••••">
                     </div>
+                    @error('password_confirmation')
+                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-        <div class="md:grid md:grid-cols-3 md:gap-6">
-            <div class="md:col-span-1">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Roles & Permissions</h3>
-                <p class="mt-1 text-sm text-gray-500">Assign roles to this member.</p>
-            </div>
-            <div class="mt-5 md:mt-0 md:col-span-2">
-                <div class="space-y-4">
-                    @foreach($roles as $role)
-                        <div class="flex items-start">
-                            <div class="flex items-center h-5">
-                                <input id="role-{{ $role->id }}" name="roles[]" type="checkbox" value="{{ $role->id }}"
-                                    {{ in_array($role->id, old('roles', $member ? $member->roles->pluck('id')->toArray() : [])) ? 'checked' : '' }}
-                                    class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
-                            </div>
-                            <div class="ml-3 text-sm">
-                                <label for="role-{{ $role->id }}" class="font-medium text-gray-700">{{ ucfirst($role->name) }}</label>
-                                <p class="text-gray-500">{{ $role->description }}</p>
-                            </div>
+    <!-- Roles y Permisos -->
+    <div class="bg-tactical-surface/30 rounded-lg border border-tactical-border/30 overflow-hidden">
+        <div class="px-6 py-4 border-b border-tactical-border/30 bg-tactical-surface/50">
+            <h3 class="text-lg font-medium text-tactical-text flex items-center">
+                <i class="fas fa-user-shield text-tactical-accent mr-2"></i>
+                Roles y Permisos
+            </h3>
+            <p class="mt-1 text-sm text-tactical-text/60">Asigna los roles correspondientes al operador.</p>
+        </div>
+        <div class="p-6">
+            <div class="space-y-4">
+                @foreach($roles as $role)
+                    <div class="flex items-start p-3 rounded-md hover:bg-tactical-surface/50 transition-colors duration-150">
+                        <div class="flex items-center h-5 mt-0.5">
+                            <input id="role-{{ $role->id }}" name="roles[]" type="checkbox" value="{{ $role->id }}"
+                                {{ in_array($role->id, old('roles', $member ? $member->roles->pluck('id')->toArray() : [])) ? 'checked' : '' }}
+                                class="h-4 w-4 text-tactical-accent border-tactical-border/50 rounded focus:ring-tactical-accent/50">
                         </div>
-                    @endforeach
-                </div>
+                        <div class="ml-3">
+                            <label for="role-{{ $role->id }}" class="block text-sm font-medium text-tactical-text/90">
+                                {{ ucfirst($role->name) }}
+                            </label>
+                            @if($role->description)
+                                <p class="text-xs text-tactical-text/60 mt-0.5">{{ $role->description }}</p>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
             </div>
+            @error('roles')
+                <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+            @enderror
         </div>
-    </div>
-
-    <div class="flex justify-end">
-        <a href="{{ route('admin.members.index') }}" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-            Cancel
-        </a>
-        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-            {{ $member ? 'Update' : 'Create' }} Member
-        </button>
     </div>
 </div>

@@ -22,22 +22,19 @@
             <form method="POST" action="{{ route('login') }}" class="space-y-6">
                 @csrf
 
-                <!-- Email -->
+                <!-- Nickname -->
                 <div class="space-y-2">
-                    <label for="email" class="input-label">
-                        <i class="fas fa-user-secret mr-2"></i>Identificación de Operador
+                    <label for="nickname" class="input-label">
+                        <i class="fas fa-user-secret mr-2"></i>Nickname
                     </label>
                     <div class="relative">
-                            <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-tactical-text/50">
-                                <i class="fas fa-eye-slash"></i>
-                            </span>
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-at text-tactical-text/50"></i>
+                            <i class="fas fa-user-tag text-tactical-text/50"></i>
                         </div>
-                        <input id="email" class="input-field pl-10" type="email" name="email" value="{{ old('email') }}" 
-                               required autofocus autocomplete="username" placeholder="operator@zima.ops">
+                        <input id="nickname" class="input-field pl-10" type="text" name="nickname" value="{{ old('nickname') }}" 
+                               required autofocus autocomplete="username" placeholder="nickname">
                     </div>
-                    @error('email')
+                    @error('nickname')
                         <p class="text-tactical-accent/80 text-sm mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</p>
                     @enderror
                 </div>
@@ -64,11 +61,6 @@
                             <input id="remember_me" type="checkbox" class="rounded border-tactical-border text-tactical-primary focus:ring-tactical-accent" name="remember">
                             <span class="ml-2 text-sm text-tactical-text/80">Recordar este dispositivo</span>
                         </div>
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-xs text-tactical-primary hover:text-tactical-accent transition-colors">
-                                ¿Código comprometido?
-                            </a>
-                        @endif
                     </div>
                 </div>
 
@@ -79,14 +71,16 @@
                 </div>
             </form>
 
-            <div class="mt-6 pt-6 border-t border-tactical-border text-center">
+            @can('register-candidate')
+                <div class="mt-6 pt-6 border-t border-tactical-border text-center">
                     <p class="text-sm text-tactical-text/70">
-                    ¿No eres un operador? 
-                    <a href="{{ route('register') }}" class="font-medium text-tactical-primary hover:text-tactical-accent transition-colors">
-                        Solicitar Acceso
-                    </a>
-                </p>
-            </div>
+                        ¿Deseas registrar un nuevo recluta?
+                        <a href="{{ route('candidates.register') }}" class="font-medium text-tactical-primary hover:text-tactical-accent transition-colors">
+                            Registrar Recluta
+                        </a>
+                    </p>
+                </div>
+            @endcan
         </div>
     </div>
 </x-auth-layout>

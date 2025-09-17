@@ -183,11 +183,15 @@
                     </form>
                 @else
                     <a href="{{ route('login') }}" class="nav-link btn-primary">
-                        <i class="fas fa-user-secret mr-2"></i> Acceso de Operador
+                        <i class="fas fa-user-secret mr-2"></i> {{ __('Acceso de Operador') }}
                     </a>
-                    <a href="{{ route('register') }}" class="nav-link btn-outline">
-                        <i class="fas fa-user-shield mr-2"></i> Unirse al Escuadrón
-                    </a>
+                    @auth
+                        @can('register-candidate')
+                            <a href="{{ route('candidates.register') }}" class="nav-link btn-outline">
+                                <i class="fas fa-user-plus mr-2"></i> {{ __('Registrar Recluta') }}
+                            </a>
+                        @endcan
+                    @endauth
                 @endauth
             </div>
         </div>

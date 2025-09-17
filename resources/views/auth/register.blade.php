@@ -37,20 +37,20 @@
                     @enderror
                 </div>
 
-                <!-- Last Name -->
+                <!-- Nickname -->
                 <div class="space-y-2">
-                    <label for="last_name" class="input-label">
-                        <i class="fas fa-id-card mr-2"></i>Apellidos
+                    <label for="nickname" class="input-label">
+                        <i class="fas fa-user-ninja mr-2"></i>Nickname
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-user-tag text-tactical-text/50"></i>
                         </div>
-                        <input id="last_name" class="input-field pl-10" type="text" name="last_name" 
-                               value="{{ old('last_name') }}" required autocomplete="family-name" 
-                               placeholder="Apellidos del operador">
+                        <input id="nickname" class="input-field pl-10" type="text" name="nickname" 
+                               value="{{ old('nickname') }}" required autocomplete="nickname" 
+                               placeholder="nickname">
                     </div>
-                    @error('last_name')
+                    @error('nickname')
                         <p class="text-tactical-accent/80 text-sm mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</p>
                     @enderror
                 </div>
