@@ -17,16 +17,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/css/tactical.css'])
+    @vite(['resources/css/app.css', 'resources/css/fonts.css'])
     <style>
         .hero-section {
             min-height: 100vh;
             background: 
-                radial-gradient(ellipse at 30% 40%, rgba(26, 32, 44, 0.9) 0%, rgba(10, 15, 25, 0.95) 100%),
-                url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M0 0h2v100H0zM20 0h2v100h-2zM40 0h2v100h-2zM60 0h2v100h-2zM80 0h2v100h-2zM100 0h2v100h-2zM0 0v2h100V0zM0 20v2h100v-2zM0 40v2h100v-2zM0 60v2h100v-2zM0 80v2h100v-2zM0 100v2h100v-2z" fill="rgba(226, 176, 7, 0.05)" fill-rule="evenodd"/></svg>');
-            background-size: 100% 100%, 50px 50px;
+                linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+                url('/images/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
             position: relative;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .hero-content {
@@ -41,21 +44,36 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: 100%;
+        }
+        
+        .logo-container {
+            margin: 0 auto 0.25rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 0;
+        }
+
+        .logo-header {
+            display: block;
+            margin: 0 auto;
         }
 
         .welcome-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 700;
-            background: linear-gradient(135deg, #e2b007 0%, #f6e05e 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-            letter-spacing: 2px;
-            line-height: 1.2;
-            margin-bottom: 2rem;
+            font-family: 'Iori', sans-serif;
+            font-size: clamp(2.5rem, 10vw, 5rem);
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+            line-height: 1;
+            margin: 0.25rem 0 1.5rem 0.2rem; /* Added 0.2rem (2mm) left margin */
             position: relative;
             display: inline-block;
+            padding-top: 0;
+            text-transform: uppercase;
         }
 
         .welcome-text::after {
@@ -72,23 +90,11 @@
         .subtitle {
             font-size: 1.25rem;
             color: #a0aec0;
-            margin-bottom: 3rem;
+            margin: 0 0 3rem 0.1rem; /* Added 0.1rem (1mm) left margin */
             max-width: 600px;
             line-height: 1.6;
         }
 
-        .tactical-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                linear-gradient(90deg, rgba(10, 15, 25, 0.8) 1px, transparent 1px) 0 0 / 20px 100%,
-                linear-gradient(0deg, rgba(10, 15, 25, 0.8) 1px, transparent 1px) 0 0 / 100% 20px;
-            z-index: 1;
-            pointer-events: none;
-        }
 
         .tactical-overlay {
             position: absolute;
@@ -163,10 +169,17 @@
 </head>
 <body class="bg-tactical-bg text-tactical-text font-sans antialiased">
     <div class="hero-section">
-        <div class="tactical-grid"></div>
         <div class="tactical-overlay"></div>
         
         <div class="hero-content">
+            <div class="logo-container">
+                <img 
+                    src="{{ asset('images/logo.svg') }}" 
+                    alt="ZIMA Logo" 
+                    style="height: 18rem; width: auto; max-width: 90%; filter: brightness(0) invert(1);"
+                    class="logo-header"
+                >
+            </div>
             <h1 class="welcome-text">ZIMA</h1>
             <p class="subtitle">Pium pium pium pium pium</p>
             
