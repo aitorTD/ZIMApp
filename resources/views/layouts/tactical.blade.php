@@ -15,9 +15,14 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link rel="alternate icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="mask-icon" href="{{ asset('images/logo.svg') }}" color="#ffffff">
 
     <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/css/tactical.css'])
+    @vite(['resources/css/app.css'])
     @stack('styles')
 </head>
 <body class="min-h-screen bg-tactical-bg text-tactical-text font-sans antialiased">

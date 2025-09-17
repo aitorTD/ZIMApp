@@ -10,56 +10,49 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link rel="alternate icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="mask-icon" href="{{ asset('images/logo.svg') }}" color="#ffffff">
     
     <!-- Scripts & Styles -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/css/fonts.css', 'resources/js/app.js'])
     @stack('styles')
     
     <style>
-        body {
-            background-color: #0a0f1f;
-            color: #e0e0e0;
+        .tactical-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 0%, transparent 15%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 15%);
+            z-index: 1;
+            pointer-events: none;
         }
-        .tactical-nav {
-            background: linear-gradient(90deg, #0a0f1f 0%, #131b33 100%);
-            border-bottom: 1px solid rgba(30, 77, 140, 0.5);
-        }
-        .tactical-card {
-            background: rgba(19, 27, 51, 0.7);
-            border: 1px solid rgba(30, 77, 140, 0.5);
-            border-radius: 0.5rem;
-            box-shadow: 0 0 15px rgba(226, 176, 7, 0.3);
-        }
-        .tactical-btn {
-            background: #e2b007;
-            color: #0a0f1f;
-            transition: all 0.3s ease;
-        }
-        .tactical-btn:hover {
-            background: #f0c14b;
-            transform: translateY(-1px);
-        }
-        .tactical-nav-link {
-            color: #a0a0a0;
-            transition: all 0.3s ease;
-        }
-        .tactical-nav-link:hover, .tactical-nav-link.active {
-            color: #e2b007;
+        .bg-tactical-pattern {
+            background: #1a1a1a;
         }
     </style>
 </head>
-<body class="font-sans antialiased min-h-screen">
-    <div class="min-h-screen flex flex-col">
-        <!-- Navigation -->
-        <nav class="tactical-nav shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <div class="flex items-center">
-                        <a href="{{ route('admin.dashboard') }}" class="font-orbitron font-bold text-xl text-tactical-accent">
-                            <i class="fas fa-shield-alt mr-2"></i> Mando Central
-                        </a>
+<body class="bg-tactical-bg text-tactical-text font-sans antialiased min-h-screen">
+    <div class="min-h-screen bg-tactical-pattern bg-cover bg-center bg-fixed relative">
+        <div class="tactical-overlay"></div>
+        <div class="min-h-screen flex flex-col relative z-10">
+            <!-- Navigation -->
+            <nav class="bg-tactical-surface/90 backdrop-blur-sm border-b border-tactical-border/30">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <div class="flex items-center">
+                            <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2">
+                                <img src="{{ asset('images/logo.svg') }}" alt="ZIMA Logo" class="h-6 w-auto" style="filter: brightness(0) invert(1);">
+                                <span class="font-iori text-xl font-bold text-tactical-text tracking-wider">MANDO CENTRAL</span>
+                            </a>
                         <div class="hidden sm:ml-10 sm:flex sm:space-x-8">
                             <a href="{{ route('dashboard') }}" class="tactical-nav-link {{ request()->routeIs('dashboard') ? 'text-tactical-accent' : '' }} inline-flex items-center px-1 pt-1 text-sm font-medium">
                                 <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
@@ -155,24 +148,19 @@
         </nav>
 
         <!-- Page Content -->
-        <main class="flex-1 py-6 px-4 sm:px-6 lg:px-8">
-            @if(session('success'))
-                <div class="mb-6 rounded-md bg-green-900/30 border border-green-800 p-4">
-                    <div class="flex">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-check-circle text-green-400"></i>
-                        </div>
-                        <div class="ml-3">
-                            <p class="text-sm font-medium text-green-100">
-                                {{ session('success') }}
-                            </p>
-                        </div>
+        <main class="flex-1 py-8 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                @if(session('success'))
+                    <div class="mb-8 bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-3 rounded-lg flex items-center space-x-2" role="alert">
+                        <i class="fas fa-check-circle"></i>
+                        <span>{{ session('success') }}</span>
                     </div>
-                </div>
-            @endif
+                @endif
 
-            @if($errors->any())
-                <div class="mb-6 rounded-md bg-red-900/30 border border-red-800 p-4">
+                @if(session('error'))
+                    <div class="mb-8 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg flex items-center space-x-2" role="alert">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>{{ session('error') }}</span>
                     <div class="flex">
                         <div class="flex-shrink-0">
                             <i class="fas fa-exclamation-circle text-red-400"></i>

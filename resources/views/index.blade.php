@@ -15,6 +15,11 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link rel="alternate icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="mask-icon" href="{{ asset('images/logo.svg') }}" color="#ffffff">
 
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/css/fonts.css'])
@@ -103,8 +108,8 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(226, 176, 7, 0.05) 0%, transparent 15%),
-                radial-gradient(circle at 80% 70%, rgba(226, 176, 7, 0.05) 0%, transparent 15%);
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 0%, transparent 15%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 15%);
             z-index: 1;
             pointer-events: none;
         }

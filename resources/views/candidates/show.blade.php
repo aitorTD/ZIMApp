@@ -1,147 +1,194 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Datos del Recluta - ZIMA</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Preload Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"></noscript>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link rel="alternate icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="mask-icon" href="{{ asset('images/logo.svg') }}" color="#ffffff">
+
+    <!-- Styles -->
+    @vite(['resources/css/app.css', 'resources/css/fonts.css'])
     <style>
-        .bg-tactical-surface { background-color: #1a202c; }
-        .bg-tactical-surface\/50 { background-color: rgba(26, 32, 44, 0.5); }
-        .bg-tactical-surface\/80 { background-color: rgba(26, 32, 44, 0.8); }
-        .bg-tactical-surface\/30 { background-color: rgba(26, 32, 44, 0.3); }
-        .border-tactical-border { border-color: #2d3748; }
-        .border-tactical-border\/50 { border-color: rgba(45, 55, 72, 0.5); }
-        .text-tactical-text { color: #e2e8f0; }
-        .text-tactical-text\/50 { color: rgba(226, 232, 240, 0.5); }
-        .text-tactical-text\/70 { color: rgba(226, 232, 240, 0.7); }
-        .text-tactical-text\/80 { color: rgba(226, 232, 240, 0.8); }
-        .text-tactical-accent { color: #4299e1; }
-        .border-tactical-accent { border-color: #4299e1; }
-        .bg-tactical-accent { background-color: #4299e1; }
-        .bg-tactical-accent\/90 { background-color: rgba(66, 153, 225, 0.9); }
-        .hover\:bg-tactical-accent:hover { background-color: #3182ce; }
-        .focus\:ring-tactical-accent:focus { --tw-ring-color: rgba(66, 153, 225, 0.5); }
-        .focus\:border-tactical-accent:focus { border-color: #4299e1; }
+        .tactical-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 0%, transparent 15%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 15%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        .bg-tactical-pattern {
+            background: #1a1a1a;
+        }
     </style>
 </head>
-<body class="bg-tactical-surface text-tactical-text min-h-screen">
-    <div class="min-h-screen bg-tactical-pattern bg-cover bg-center bg-fixed">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <!-- Back Button -->
-            <div class="mb-6">
-                <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 bg-tactical-surface/50 border border-tactical-border rounded-md font-medium text-sm text-tactical-text/80 hover:bg-tactical-surface/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tactical-accent transition-colors">
-                    <i class="fas fa-arrow-left mr-2"></i>Volver al Cuadro de Mando
-                </a>
-            </div>
-            
-            <!-- Candidate Info -->
-            <div class="bg-tactical-surface/50 border border-tactical-border rounded-lg overflow-hidden mb-4 shadow-lg">
-                <div class="px-4 py-3 sm:px-5 border-b border-tactical-border/30">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                        <div class="mb-1 sm:mb-0">
-                            <div class="flex items-center">
-                                <h3 class="text-lg leading-5 font-medium text-tactical-text">
-                                    <i class="fas fa-user-secret text-tactical-accent mr-2"></i>Informe de Recluta
-                                </h3>
-                                @php
-                                    $statusStyles = [
-                                        'pending' => 'bg-yellow-500/90 text-white border-yellow-500',
-                                        'accepted' => 'bg-green-500/90 text-white border-green-500',
-                                        'rejected' => 'bg-red-500/90 text-white border-red-500',
-                                        'default' => 'bg-gray-500/90 text-white border-gray-500'
-                                    ];
-                                    $statusTexts = [
-                                        'pending' => 'Pendiente',
-                                        'accepted' => 'Aceptado',
-                                        'rejected' => 'Rechazado',
-                                        'default' => ucfirst($candidate->status)
-                                    ];
-                                    $status = strtolower($candidate->status);
-                                    $statusStyle = $statusStyles[$status] ?? $statusStyles['default'];
-                                    $statusText = $statusTexts[$status] ?? $statusTexts['default'];
-                                @endphp
-                                <span class="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $statusStyle }}">
-                                    {{ $statusText }}
-                                </span>
-                            </div>
-                        </div>
+<body class="bg-tactical-bg text-tactical-text font-sans antialiased min-h-screen">
+    <div class="min-h-screen bg-tactical-pattern bg-cover bg-center bg-fixed relative">
+        <div class="tactical-overlay"></div>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 relative z-10">
+            <!-- Header -->
+            <header class="mb-10">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+                    <a href="{{ route('dashboard') }}" class="group inline-flex items-center text-tactical-text/80 hover:text-tactical-text transition-colors">
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-0.5 transition-transform"></i>
+                        <span class="text-sm font-medium">Volver al Cuadro de Mando</span>
+                    </a>
+                    <div class="flex items-center space-x-3">
+                        <img src="{{ asset('images/logo.svg') }}" alt="ZIMA Logo" class="h-6 w-auto" style="filter: brightness(0) invert(1);">
+                        <span class="font-iori text-xl font-bold text-tactical-text tracking-wider opacity-90">ZIMA</span>
                     </div>
                 </div>
-                <div class="px-4 py-5 sm:p-6">
-                    <!-- Personal Information -->
-                    <div class="space-y-4">
-                        <h4 class="text-sm font-medium text-tactical-text/70 uppercase tracking-wider border-b border-tactical-border/30 pb-2">
-                            <i class="fas fa-id-card text-tactical-accent mr-2"></i>Datos Personales
-                        </h4>
+                <h1 class="mt-8 text-2xl md:text-3xl font-light text-tactical-text/90">
+                    <span class="font-medium">{{ $candidate->first_name }} {{ $candidate->last_name }}</span>
+                    <span class="ml-3 inline-flex items-center px-3 py-0.5 rounded-full text-xs font-medium {{ [
+                        'pending' => 'bg-yellow-500/20 text-yellow-400',
+                        'accepted' => 'bg-green-500/20 text-green-400',
+                        'rejected' => 'bg-red-500/20 text-red-400',
+                        'default' => 'bg-gray-500/20 text-gray-400'
+                    ][strtolower($candidate->status)] ?? 'bg-gray-500/20 text-gray-400' }}">
+                        {{ [
+                            'pending' => 'Pendiente',
+                            'accepted' => 'Aceptado',
+                            'rejected' => 'Rechazado',
+                            'default' => ucfirst($candidate->status)
+                        ][strtolower($candidate->status)] ?? ucfirst($candidate->status) }}
+                    </span>
+                </h1>
+                <p class="mt-1 text-sm text-tactical-text/60">
+                    ID: {{ $candidate->id }} • Última actualización: {{ $candidate->updated_at->diffForHumans() }}
+                </p>
+            </header>
+            
+            <!-- Candidate Info -->
+            <div class="bg-tactical-surface/40 backdrop-blur-sm rounded-xl overflow-hidden mb-8">
+                <div class="p-6">
+                    <div class="mb-6">
+                        <h2 class="text-sm font-medium text-tactical-text/70 uppercase tracking-wider mb-4 flex items-center">
+                            <i class="fas fa-id-card text-tactical-accent mr-2"></i>
+                            <span>Datos Personales</span>
+                        </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div>
-                                <p class="text-xs text-tactical-text/50 uppercase">Nombre Completo</p>
-                                <p class="text-tactical-text">{{ $candidate->first_name }} {{ $candidate->last_name }}</p>
+                            <div class="space-y-1">
+                                <p class="text-xs font-medium text-tactical-text/50 uppercase tracking-wider">Nombre Completo</p>
+                                <p class="text-tactical-text/90">{{ $candidate->first_name }} {{ $candidate->last_name }}</p>
                             </div>
                             @if($candidate->email)
-                            <div>
-                                <p class="text-xs text-tactical-text/50 uppercase">Correo Electrónico</p>
-                                <p class="text-tactical-text">{{ $candidate->email }}</p>
+                            <div class="space-y-1">
+                                <p class="text-xs font-medium text-tactical-text/50 uppercase tracking-wider">Correo Electrónico</p>
+                                <a href="mailto:{{ $candidate->email }}" class="text-tactical-accent hover:underline">{{ $candidate->email }}</a>
                             </div>
                             @endif
                             @if($candidate->phone)
-                            <div>
-                                <p class="text-xs text-tactical-text/50 uppercase">Teléfono</p>
-                                <p class="text-tactical-text">{{ $candidate->phone }}</p>
+                            <div class="space-y-1">
+                                <p class="text-xs font-medium text-tactical-text/50 uppercase tracking-wider">Teléfono</p>
+                                <a href="tel:{{ $candidate->phone }}" class="text-tactical-text/90 hover:underline">{{ $candidate->phone }}</a>
                             </div>
                             @endif
                             @if($candidate->date_of_birth)
-                            <div>
-                                <p class="text-xs text-tactical-text/50 uppercase">Fecha de Nacimiento</p>
-                                <p class="text-tactical-text">{{ $candidate->date_of_birth->format('d/m/Y') }}</p>
+                            <div class="space-y-1">
+                                <p class="text-xs font-medium text-tactical-text/50 uppercase tracking-wider">Fecha de Nacimiento</p>
+                                <p class="text-tactical-text/90">{{ $candidate->date_of_birth->format('d/m/Y') }}</p>
                             </div>
                             @endif
                         </div>
                     </div>
-                    </div>
 
-                </div>
-
-                <!-- Notes Section -->
-                <div class="px-4 py-5 sm:p-6 border-t border-tactical-border/30">
-                    <div class="space-y-4">
-                        <h4 class="text-sm font-medium text-tactical-text/70 uppercase tracking-wider border-b border-tactical-border/30 pb-2">
-                            <i class="fas fa-clipboard-list text-tactical-accent mr-2"></i>Informes y Notas
-                        </h4>
-                        <div class="bg-tactical-surface/30 border border-tactical-border/50 rounded-lg p-4">
-                            <x-candidate-notes 
-                                :candidate="$candidate" 
-                                :notes="$candidate->notes ?? collect()" 
-                                :skipEmptyState="true"
-                            >
-                                <div class="text-center py-6">
-                                    <i class="fas fa-clipboard text-3xl text-tactical-text/30 mb-2"></i>
-                                    <p class="text-tactical-text/70">No hay informes disponibles</p>
-                                    <p class="text-xs text-tactical-text/50 mt-1">Añade el primer informe utilizando el formulario</p>
-                                </div>
-                            </x-candidate-notes>
+                    <!-- Additional Information -->
+                    @if($candidate->address || $candidate->city || $candidate->country || $candidate->postal_code)
+                    <div class="pt-6 border-t border-tactical-border/10">
+                        <h3 class="text-sm font-medium text-tactical-text/70 uppercase tracking-wider mb-4 flex items-center">
+                            <i class="fas fa-map-marker-alt text-tactical-accent mr-2"></i>
+                            <span>Dirección</span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            @if($candidate->address)
+                            <div class="space-y-1">
+                                <p class="text-xs font-medium text-tactical-text/50 uppercase tracking-wider">Dirección</p>
+                                <p class="text-tactical-text/90">{{ $candidate->address }}</p>
+                            </div>
+                            @endif
+                            @if($candidate->city)
+                            <div class="space-y-1">
+                                <p class="text-xs font-medium text-tactical-text/50 uppercase tracking-wider">Ciudad</p>
+                                <p class="text-tactical-text/90">{{ $candidate->city }}</p>
+                            </div>
+                            @endif
+                            @if($candidate->country)
+                            <div class="space-y-1">
+                                <p class="text-xs font-medium text-tactical-text/50 uppercase tracking-wider">País</p>
+                                <p class="text-tactical-text/90">{{ $candidate->country }}</p>
+                            </div>
+                            @endif
+                            @if($candidate->postal_code)
+                            <div class="space-y-1">
+                                <p class="text-xs font-medium text-tactical-text/50 uppercase tracking-wider">Código Postal</p>
+                                <p class="text-tactical-text/90">{{ $candidate->postal_code }}</p>
+                            </div>
+                            @endif
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 
-            <!-- Actions -->
-            <div class="mt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
-                <div class="text-sm text-tactical-text/60">
-                    <span class="hidden sm:inline">ID:</span> #{{ $candidate->id }}
-                    <span class="mx-2 hidden sm:inline">•</span>
-                    <span>Última actualización: {{ $candidate->updated_at->diffForHumans() }}</span>
+            <!-- Notes Section -->
+            <div class="mb-10">
+                <h2 class="text-lg font-light text-tactical-text/90 flex items-center mb-4">
+                    <i class="fas fa-clipboard-list text-tactical-accent mr-2"></i>
+                    <span>Informes y Notas</span>
+                </h2>
+
+                <div class="space-y-4">
+                    <x-candidate-notes 
+                        :candidate="$candidate" 
+                        :notes="$candidate->notes ?? collect()" 
+                        :skipEmptyState="true"
+                    >
+                        <div class="bg-tactical-surface/30 rounded-xl p-8 text-center">
+                            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-tactical-surface/50 mb-3">
+                                <i class="fas fa-clipboard text-tactical-text/50 text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-tactical-text/90 mb-1">No hay notas disponibles</h3>
+                            <p class="text-tactical-text/60 text-sm max-w-md mx-auto">
+                                Añade la primera nota para este recluta haciendo clic en el botón "Nueva Nota"
+                            </p>
+                        </div>
+                    </x-candidate-notes>
                 </div>
-                <div class="flex space-x-3 w-full sm:w-auto">
-                    @can('update', $candidate)
+            </div>
+
+            <!-- Footer -->
+            <div class="pt-6 border-t border-tactical-border/10 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
+                <p class="text-sm text-tactical-text/50">
+                    ZIMA • {{ now()->format('Y') }}
+                </p>
+                @can('update', $candidate)
+                <div class="flex space-x-3">
                     <a href="{{ route('candidates.edit', $candidate) }}" 
-                       class="inline-flex items-center px-4 py-2 bg-tactical-accent/80 border border-tactical-accent/70 rounded-md font-medium text-xs text-white uppercase tracking-wider hover:bg-tactical-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tactical-accent transition-colors">
-                        <i class="fas fa-edit mr-2"></i>Editar
+                       class="inline-flex items-center px-4 py-2 border border-tactical-border/30 rounded-md text-sm font-medium text-tactical-text/80 hover:bg-tactical-surface/50 hover:text-tactical-text transition-colors">
+                        <i class="fas fa-edit mr-2"></i>Editar Recluta
                     </a>
-                    @endcan
                 </div>
+                @endcan
             </div>
         </div>
     </div>

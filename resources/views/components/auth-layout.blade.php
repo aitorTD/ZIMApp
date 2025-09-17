@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/css/tactical.css'])
+    @vite(['resources/css/app.css'])
     @stack('styles')
 </head>
 <body class="min-h-screen bg-tactical-bg text-tactical-text font-sans antialiased">
@@ -27,11 +27,14 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex items-center">
-                        <a href="{{ url('/') }}" class="flex items-center space-x-2 group">
-                            <div class="h-10 w-10 rounded-full bg-tactical-primary/10 flex items-center justify-center group-hover:bg-tactical-primary/20 transition-all duration-300">
-                                <x-application-logo class="h-5 w-5 text-tactical-accent" />
-                            </div>
-                            <span class="font-orbitron text-xl font-bold text-tactical-accent tracking-wider">ZIMA</span>
+                        <a href="{{ url('/') }}" class="flex items-center space-x-3 group">
+                            <img 
+                                src="{{ asset('images/logo.svg') }}" 
+                                alt="ZIMA Logo" 
+                                class="h-8 w-auto"
+                                style="filter: brightness(0) invert(1);"
+                            >
+                            <span class="font-iori text-2xl font-bold text-tactical-text tracking-widest">ZIMA</span>
                         </a>
                     </div>
                     @auth

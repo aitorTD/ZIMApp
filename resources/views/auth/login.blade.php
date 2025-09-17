@@ -7,12 +7,17 @@
                 <div class="absolute inset-0 bg-gradient-to-br from-tactical-primary/5 to-transparent"></div>
             </div>
             
-            <!-- Header -->
+            <!-- Header with ZIMA Logo -->
             <div class="text-center mb-8">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-tactical-primary/10 flex items-center justify-center">
-                    <x-application-logo class="h-8 w-8 text-tactical-accent" />
+                <div class="logo-container flex flex-col items-center mb-6">
+                    <img 
+                        src="{{ asset('images/logo.svg') }}" 
+                        alt="ZIMA Logo" 
+                        class="logo-header"
+                        style="height: 6rem; width: auto; max-width: 90%; filter: brightness(0) invert(1);"
+                    >
                 </div>
-                <h2 class="text-2xl font-orbitron font-bold text-tactical-text">ACCESO DE OPERADOR</h2>
+                <h2 class="text-2xl font-orbitron font-bold text-tactical-text mt-4">ACCESO DE OPERADOR</h2>
                 <p class="text-tactical-text/70 mt-1">Accede al puesto de mando táctico</p>
             </div>
 

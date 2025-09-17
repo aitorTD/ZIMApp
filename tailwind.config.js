@@ -13,21 +13,23 @@ export default {
         extend: {
             colors: {
                 tactical: {
-                    bg: '#0a0f1f',
-                    surface: '#131b33',
-                    primary: '#1e4d8c',
-                    accent: '#e2b007',
-                    text: '#e0e0e0',
-                    'text-muted': '#a0a0a0',
-                    border: 'rgba(30, 77, 140, 0.5)',
+                    bg: '#1a1a1a',        // Dark gray background
+                    surface: '#2d2d2d',    // Slightly lighter gray for surfaces
+                    primary: '#4a4a4a',    // Medium gray for primary elements
+                    secondary: '#ffffff',  // White for secondary elements
+                    accent: '#e0e0e0',     // Light gray for accents
+                    text: '#f5f5f5',       // Off-white for better readability
+                    'text-muted': '#b3b3b3', // Muted text color
+                    border: 'rgba(255, 255, 255, 0.1)', // Subtle border
                 },
             },
             fontFamily: {
                 sans: ['Roboto', 'Figtree', ...defaultTheme.fontFamily.sans],
                 orbitron: ['Orbitron', ...defaultTheme.fontFamily.sans],
+                iori: ['Iori', 'sans-serif'],
             },
             boxShadow: {
-                'tactical': '0 0 15px rgba(226, 176, 7, 0.3)',
+                'tactical': '0 0 15px rgba(255, 255, 255, 0.1)',
                 'tactical-glow': '0 0 15px rgba(226, 176, 7, 0.6)',
             },
             animation: {
